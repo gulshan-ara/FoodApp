@@ -1,4 +1,5 @@
 // Step 2 - import required libraries
+import {registerRootComponent} from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Cell, Section, TableView } from 'react-native-tableview-simple';
@@ -7,31 +8,49 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {Image} from 'react-native';
+import { ImageBackground } from 'react-native-web';
+
+// step 5 - Custom HomeScreenCell
+const HomeScreenCell = (props) => (
+  <Cell
+    {...props}
+    contentContainerStyle={{borderRadius: 25, margin: 10, backgroundColor: 'black',height: 290}}
+    cellContentView={
+      <View 
+        style={{alignItems:'flex-start', flexDirection: 'column', flex: 1, paddingTop: 10}}
+      >
+        <ImageBackground source={require("./assets/ice-cream.jpeg")} resizeMode="cover" style={{width: 340, height: 220}}></ImageBackground>
+        <Text style={{color: 'blueviolet', fontSize: 25, fontWeight: 'bold', backgroundColor:'white', width: 340, borderBottomEndRadius: 10, marginTop: 5}}>{props.title}</Text>
+        <Text style={{color: 'blueviolet', fontSize: 20}}>This is tagline : {props.tagline}</Text>
+      </View>
+    }
+  />
+);
 
 // Step 4 - HomeScreen
 function HomeScreen(){
   return (
     <SafeAreaView>
       <ScrollView style={{height: "100%"}}>
-        <TableView>
-          <Section 
+        <TableView appearance='light'>
+          <Section
             header='' 
             hideSeparator="true"
             sectionTintColor="#ccc"
           >
-            <Cell cellStyle='Basic' title='Basic Cell' detail='Details'></Cell>
+            <HomeScreenCell
+              title="Joe's Gelato"
+              tagline="Desert, Ice Cream"
+            />
+            <HomeScreenCell
+              title="Joe's Gelato"
+              tagline="Desert, Ice Cream"
+            />
           </Section>
         </TableView>
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function Restaurant(){
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>It's Restaurant</Text>
-    </View>
   );
 }
 
@@ -51,13 +70,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-         name='Home' 
-         component={HomeScreen}
-        >
-        </Stack.Screen>
-        <Stack.Screen
          name='Restaurant' 
-         component={Restaurant}
+         component={HomeScreen}
         >
         </Stack.Screen>
         <Stack.Screen
@@ -77,4 +91,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cellMargin: {
+    borderRadius: 5
+  }
 });
+
+registerRootComponent(App);
+
