@@ -8,21 +8,59 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import {Image} from 'react-native';
-import { ImageBackground } from 'react-native-web';
+import { ImageBackground } from 'react-native';
+
+const restaurantData = [
+  {
+    title : "Biriyani Blues",
+    tagline: "Asian cuisin, $$$",
+    eta: "10-50",
+    imagePath: require('./assets/images/polao.jpeg'),
+    openStatus: 'Closed Now!',
+
+  },
+  {
+    title : "Cream & Cake",
+    tagline: "Dessert, Ice Cream, $$$",
+    eta: "10-30",
+    imagePath: require('./assets/images/ice-cream.jpeg'),
+    openStatus: 'Open Now!'
+  },
+  {
+    title : "Burger King",
+    tagline: "American, Burgers, $$$",
+    eta: "10-30",
+    imagePath: require('./assets/images/burger.jpeg'),
+    openStatus: 'Closed Now!'
+  },
+  {
+    title : "Dessert Dairy",
+    tagline: "Dessert, Custard, $$$",
+    eta: "15-40",
+    imagePath: require('./assets/images/custard.jpeg'),
+    openStatus: 'Closed Now!'
+  },
+]
 
 // step 5 - Custom HomeScreenCell
 const HomeScreenCell = (props) => (
   <Cell
     {...props}
-    contentContainerStyle={{borderRadius: 25, margin: 10, backgroundColor: 'black',height: 290}}
+    contentContainerStyle={{margin: 10, height: 290}}
     cellContentView={
-      <View 
-        style={{alignItems:'flex-start', flexDirection: 'column', flex: 1, paddingTop: 10}}
-      >
-        <ImageBackground source={require("./assets/ice-cream.jpeg")} resizeMode="cover" style={{width: 340, height: 220}}></ImageBackground>
-        <Text style={{color: 'blueviolet', fontSize: 25, fontWeight: 'bold', backgroundColor:'white', width: 340, borderBottomEndRadius: 10, marginTop: 5}}>{props.title}</Text>
-        <Text style={{color: 'blueviolet', fontSize: 20}}>This is tagline : {props.tagline}</Text>
+      <View style={styles.container}>
+        <ImageBackground source={props.imageSrc} resizeMode='cover' style={styles.imageStyle}>
+          <View style={styles.etaStyle}>
+            <Text style={styles.etaText}>{props.eta}</Text>
+            <Text style={styles.etaText}>mins</Text>
+          </View>
+        </ImageBackground>
+        <Text style={styles.titleText}>{props.title}</Text>
+        <Text style={styles.taglineText}>Rating : ⭐️⭐️⭐️⭐️⭐️</Text>
+        <Text style={styles.taglineText}>{props.tagline}</Text>
+        <View style={styles.openStatusStyle}>
+          <Text style={{fontSize: 25, fontWeight:'bold'}}>{props.openStatus}</Text>
+        </View>
       </View>
     }
   />
@@ -39,14 +77,15 @@ function HomeScreen(){
             hideSeparator="true"
             sectionTintColor="#ccc"
           >
-            <HomeScreenCell
-              title="Joe's Gelato"
-              tagline="Desert, Ice Cream"
-            />
-            <HomeScreenCell
-              title="Joe's Gelato"
-              tagline="Desert, Ice Cream"
-            />
+            {restaurantData.map((item, index) => (
+              <HomeScreenCell key={item.title}
+              title={item.title}
+              tagline={item.tagline}
+              eta= {item.eta}
+              imageSrc={item.imagePath}
+              openStatus={item.openStatus}
+              />
+            ))}
           </Section>
         </TableView>
       </ScrollView>
@@ -87,12 +126,59 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    paddingTop: 10
   },
-  cellMargin: {
-    borderRadius: 5
+  titleText: {
+    color: 'blueviolet', 
+    fontSize: 25, 
+    fontWeight: 'bold',  
+    width: '100%', 
+    marginTop: 10,
+    backgroundColor: 'plum', 
+    height: 30
+  },
+  taglineText:{
+    color: 'blueviolet',
+    fontSize: 15, 
+    fontWeight:'800', 
+    marginTop: 5
+  },
+  etaStyle:{
+    position: 'absolute', 
+    top: 120, 
+    left: 180, 
+    right: 0, 
+    bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'white', 
+    height: 85, 
+    width: 120, 
+    borderRadius: 50, 
+    overflow: 'hidden', 
+    borderColor: 'blue', 
+    borderWidth: 2
+  },
+  etaText:{
+    fontSize: 25, 
+    fontWeight:'bold'
+  },
+  imageStyle:{
+    width: '100%', 
+    height: 170
+  },
+  openStatusStyle:{
+    position: 'absolute',
+    top: 230, 
+    left: 160, 
+    right: 0, 
+    bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'white', 
+    height: 35
   }
 });
 
