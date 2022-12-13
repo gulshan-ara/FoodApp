@@ -9,6 +9,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+// step 3 - wrap the contents of App in a navigationContainer
+const Stack = createStackNavigator();
 
 const restaurantData = [
   {
@@ -42,11 +45,71 @@ const restaurantData = [
   },
 ]
 
+const menuData = [
+  {
+    restaurantId : "Biriyani Blues",
+    imagePath: require('./assets/images/polao.jpeg'),
+    items: [{
+      title: "Gelato",
+      contents: [
+        {title: "Vanilla"},
+        {title: "Chocolate"},
+        {title: "Mint"}
+      ]
+    }, 
+    {
+      title: "vanilla",
+      contents: [
+        {title: "Vanilla"},
+        {title: "Chocolate"},
+        {title: "Mint"}
+      ]
+    }]
+  },
+  {
+    restaurantId : "Cream & Cake",
+    imagePath: require('./assets/images/ice-cream.jpeg'),
+    items: [{
+      title: "Cream",
+      contents: [
+        {title: "Vanilla white"},
+        {title: "Chocolate"},
+        {title: "Strawberry"}
+      ]
+    }]
+  },
+  {
+    restaurantId : "Burger King",
+    imagePath: require('./assets/images/burger.jpeg'),
+    items: [{
+      title: "Coffee",
+      contents: [
+        {title: "Flat white"},
+        {title: "Latte"},
+        {title: "Caffe Americano"}
+      ]
+    }]
+  },
+  {
+    restaurantId : "Dessert Dairy",
+    imagePath: require('./assets/images/custard.jpeg'),
+    items: [{
+      title: "Pastry",
+      contents: [
+        {title: "Vanilla"},
+        {title: "Chocolate"},
+        {title: "Red Velvet"}
+      ]
+    }]
+  },
+]
+
 // step 5 - Custom HomeScreenCell
 const HomeScreenCell = (props) => (
   <Cell
     {...props}
     contentContainerStyle={{margin: 10, height: 290}}
+    onPress={props.action}
     cellContentView={
       <View style={styles.container}>
         <ImageBackground source={props.imageSrc} resizeMode='cover' style={styles.imageStyle}>
@@ -68,6 +131,8 @@ const HomeScreenCell = (props) => (
 
 // Step 4 - HomeScreen
 function HomeScreen(){
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView>
       <ScrollView style={{height: "100%"}}>
@@ -77,13 +142,14 @@ function HomeScreen(){
             hideSeparator="true"
             sectionTintColor="#ccc"
           >
-            {restaurantData.map((item, index) => (
+            {restaurantData.map((item) => (
               <HomeScreenCell key={item.title}
               title={item.title}
               tagline={item.tagline}
               eta= {item.eta}
               imageSrc={item.imagePath}
               openStatus={item.openStatus}
+              action={()=> navigation.navigate('Menu', {resId : item.title})}
               />
             ))}
           </Section>
@@ -93,16 +159,26 @@ function HomeScreen(){
   );
 }
 
-function Menu(){
+function Menu({route}){
+  const {resId} = route.params;
+  const resMenu = menuData.find(item => item.restaurantId === resId);
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>It's Menu</Text>
-    </View>
+    <SafeAreaView>
+      <ScrollView style={{height: "100%"}}>
+        <TableView appearance='light' style={{backgroundColor: '#00000000'}}>
+          {resMenu.items.map((item) => (
+            <Section header={item.title} key={item.title} headerTextColor='black' headerTextStyle={{fontWeight:'bold', textTransform:'uppercase', backgroundColor:'rgba(10, 0, 255, 0.1)', height: 35, textAlign: 'center', paddingTop: 5, fontSize: 20}}>
+              {item.contents.map((cellItem) =>(
+                <Cell key={cellItem.title} title={cellItem.title} cellStyle='Basic' />
+              ))}
+            </Section>
+          ))}
+        </TableView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-
-// step 3 - wrap the contents of App in a navigationContainer
-const Stack = createStackNavigator();
 
 export default function App() {
   return (
@@ -111,11 +187,33 @@ export default function App() {
         <Stack.Screen
          name='Restaurant' 
          component={HomeScreen}
+         options={{
+          headerStyle: {
+            backgroundColor: 'plum',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'cursive',
+            fontSize: 35
+          },
+        }}
         >
         </Stack.Screen>
         <Stack.Screen
          name='Menu' 
          component={Menu}
+         options={{
+          headerStyle: {
+            backgroundColor: 'plum',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'cursive',
+            fontSize: 35
+          },
+        }}
         >
         </Stack.Screen>
       </Stack.Navigator>
@@ -159,7 +257,8 @@ const styles = StyleSheet.create({
     borderRadius: 50, 
     overflow: 'hidden', 
     borderColor: 'blue', 
-    borderWidth: 2
+    borderWidth: 2,
+    zIndex: 1
   },
   etaText:{
     fontSize: 25, 
