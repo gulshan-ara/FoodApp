@@ -48,57 +48,109 @@ const restaurantData = [
 const menuData = [
   {
     restaurantId : "Biriyani Blues",
-    imagePath: require('./assets/images/polao.jpeg'),
     items: [{
-      title: "Gelato",
+      title: "Biriyani",
       contents: [
-        {title: "Vanilla"},
-        {title: "Chocolate"},
-        {title: "Mint"}
+        {title: "Chicken Biriyani", price : "5.99$"},
+        {title: "Veg Biriyani", price : "3.99$"},
+        {title: "Hyderabadi Biriryani", price : "5.99$"},
+        {title: "Mutton Biriyani", price : "7.99$"}
       ]
     }, 
     {
-      title: "vanilla",
+      title: "Polao",
       contents: [
-        {title: "Vanilla"},
-        {title: "Chocolate"},
-        {title: "Mint"}
+        {title: "White polao", price : "1.99$"},
+        {title: "Vegetable polao", price : "2.49$"},
+        {title: "Cauliflower polao", price : "1.99$"}
+      ]
+    },
+    {
+      title: "Sides",
+      contents: [
+        {title: "Spicy Roasted Chicken", price : "5.99$"},
+        {title: "Chilli Chicken", price : "3.99$"},
+        {title: "Sour & Sweet Cherry", price : "5.99$"},
+        {title: "Kebab (with beef)", price : "7.99$"},
+        {title: "Kebab (veg)", price : "7.99$"},
+        {title: "Beef Curry", price : "7.99$"}
+      ]
+    },
+    {
+      title: "Drinks",
+      contents: [
+        {title: "Borhani", price : "1.99$"},
+        {title: "Coka cola", price : "2.49$"},
+        {title: "Pepsi", price : "1.99$"},
+        {title: "7up", price : "1.99$"}
       ]
     }]
   },
   {
     restaurantId : "Cream & Cake",
-    imagePath: require('./assets/images/ice-cream.jpeg'),
     items: [{
-      title: "Cream",
+      title: "Cakes",
       contents: [
-        {title: "Vanilla white"},
-        {title: "Chocolate"},
-        {title: "Strawberry"}
+        {title: "Fruit Cake", price : "5.99$"},
+        {title: "No Cream Chocolate Cake", price : "5.99$"},
+        {title: "Vanilla Cake", price : "5.99$"},
+        {title: "Orange Cake", price : "5.99$"},
+        {title: "Red Velvet Cake", price : "5.99$"},
+        {title: "Moist Chocolate Cake", price : "5.99$"},
+        {title: "Choco Lava Cake", price : "5.99$"},
+        {title: "Cupcakes", price : "5.99$"}
+      ]
+    },{
+      title: "Ice Cream",
+      contents: [
+        {title: "Vanilla Ice Cream", price : "5.99$"},
+        {title: "Strawberry Ice Cream", price : "5.99$"},
+        {title: "Chocolate Ice Cream", price : "5.99$"}
+      ]
+    },{
+      title: "Special",
+      contents: [
+        {title: "Malai Cake", price : "5.99$"},
+        {title: "Ice cream Cake", price : "5.99$"},
       ]
     }]
   },
   {
     restaurantId : "Burger King",
-    imagePath: require('./assets/images/burger.jpeg'),
     items: [{
-      title: "Coffee",
+      title: "Burgers",
       contents: [
-        {title: "Flat white"},
-        {title: "Latte"},
-        {title: "Caffe Americano"}
+        {title: "Vegetable Burger", price : "5.99$"},
+        {title: "Chicken Burger", price : "5.99$"},
+        {title: "Beef Burger", price : "5.99$"},
+        {title: "Spicy 8-layer Burger", price : "5.99$"}
       ]
-    }]
+    },{
+      title: "Others",
+      contents: [
+      {title: "Chicken Puff", price : "5.99$"},
+      {title: "Chicken Pizza", price : "5.99$"},
+      {title: "Beef Puff", price : "5.99$"},
+      {title: "Sandwich", price : "5.99$"}
+    ]
+    },{
+      title: "Drinks",
+      contents: [
+      {title: "Coffee", price : "5.99$"},
+      {title: "Latte", price : "5.99$"},
+      {title: "Hot Chocolate", price : "5.99$"},
+      {title: "Green tea", price : "5.99$"}
+    ]
+  }]
   },
   {
     restaurantId : "Dessert Dairy",
-    imagePath: require('./assets/images/custard.jpeg'),
     items: [{
       title: "Pastry",
       contents: [
-        {title: "Vanilla"},
-        {title: "Chocolate"},
-        {title: "Red Velvet"}
+        {title: "Vanilla", price : "5.99$"},
+        {title: "Chocolate", price : "5.99$"},
+        {title: "Red Velvet", price : "5.99$"}
       ]
     }]
   },
@@ -159,6 +211,7 @@ function HomeScreen(){
   );
 }
 
+
 function Menu({route}){
   const {resId} = route.params;
   const resMenu = menuData.find(item => item.restaurantId === resId);
@@ -166,11 +219,23 @@ function Menu({route}){
   return (
     <SafeAreaView>
       <ScrollView style={{height: "100%"}}>
-        <TableView appearance='light' style={{backgroundColor: '#00000000'}}>
+        <TableView appearance='light'>
           {resMenu.items.map((item) => (
-            <Section header={item.title} key={item.title} headerTextColor='black' headerTextStyle={{fontWeight:'bold', textTransform:'uppercase', backgroundColor:'rgba(10, 0, 255, 0.1)', height: 35, textAlign: 'center', paddingTop: 5, fontSize: 20}}>
+            <Section 
+              header={item.title} 
+              key={item.title} 
+              headerTextColor='black' 
+              headerTextStyle={styles.sectionHeaderStyle}
+            >
               {item.contents.map((cellItem) =>(
-                <Cell key={cellItem.title} title={cellItem.title} cellStyle='Basic' />
+                <Cell 
+                  key={cellItem.title} 
+                  title={cellItem.title} 
+                  titleTextStyle={styles.menuCellTitleStyle} 
+                  cellStyle='RightDetail' 
+                  detail={cellItem.price}
+                  detailTextStyle={styles.menuCellDetailStyle}
+                />
               ))}
             </Section>
           ))}
@@ -194,7 +259,6 @@ export default function App() {
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
-            fontFamily: 'cursive',
             fontSize: 35
           },
         }}
@@ -210,7 +274,6 @@ export default function App() {
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
-            fontFamily: 'cursive',
             fontSize: 35
           },
         }}
@@ -278,6 +341,26 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     backgroundColor: 'white', 
     height: 35
+  },
+  sectionHeaderStyle:{
+    fontWeight:'600', 
+    textTransform:'uppercase', 
+    backgroundColor:'rgba(10, 0, 255, 0.1)', 
+    height: 35, 
+    textAlign: 'center', 
+    fontSize: 25,
+  },
+  menuCellTitleStyle:{
+    fontSize: 20,
+    fontWeight: '600',
+    padding: 5,
+    color: 'violet'
+  },
+  menuCellDetailStyle:{
+    fontSize: 25,
+    fontWeight: 'bold',
+    padding: 5,
+    color: 'rgba(10, 0, 255, 0.5)'
   }
 });
 
