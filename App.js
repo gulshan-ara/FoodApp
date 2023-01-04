@@ -1,7 +1,6 @@
 // Step 2 - import required libraries
-import {registerRootComponent} from 'expo';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Cell, Section, TableView } from 'react-native-tableview-simple';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,18 +9,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 // step 3 - wrap the contents of App in a navigationContainer
 const Stack = createStackNavigator();
 
 const restaurantData = [
-  {
-    title : "Biriyani Blues",
-    tagline: "Asian cuisin, $$$",
-    eta: "10-50",
-    imagePath: require('./assets/images/polao.jpeg'),
-    openStatus: 'Closed Now!',
-
-  },
   {
     title : "Cream & Cake",
     tagline: "Dessert, Ice Cream, $$$",
@@ -37,12 +29,13 @@ const restaurantData = [
     openStatus: 'Closed Now!'
   },
   {
-    title : "Dessert Dairy",
-    tagline: "Dessert, Custard, $$$",
-    eta: "15-40",
-    imagePath: require('./assets/images/custard.jpeg'),
-    openStatus: 'Closed Now!'
-  },
+    title : "Biriyani Blues",
+    tagline: "Asian cuisin, $$$",
+    eta: "10-50",
+    imagePath: require('./assets/images/biriyani.jpeg'),
+    openStatus: 'Closed Now!',
+
+  }
 ]
 
 const menuData = [
@@ -51,38 +44,27 @@ const menuData = [
     items: [{
       title: "Biriyani",
       contents: [
-        {title: "Chicken Biriyani", price : "5.99$"},
-        {title: "Veg Biriyani", price : "3.99$"},
-        {title: "Hyderabadi Biriryani", price : "5.99$"},
-        {title: "Mutton Biriyani", price : "7.99$"}
+        {title: "Chicken Biriyani", price : "5.99$", imagePath: require('./assets/images/biriyani.jpeg')},
+        {title: "Veg Biriyani", price : "3.99$", imagePath: require('./assets/images/biriyani.jpeg')},
+        {title: "Hyderabadi Biriryani", price : "5.99$", imagePath: require('./assets/images/biriyani.jpeg')},
+        {title: "Mutton Biriyani", price : "7.99$", imagePath: require('./assets/images/biriyani.jpeg')}
       ]
     }, 
     {
       title: "Polao",
       contents: [
-        {title: "White polao", price : "1.99$"},
-        {title: "Vegetable polao", price : "2.49$"},
-        {title: "Cauliflower polao", price : "1.99$"}
-      ]
-    },
-    {
-      title: "Sides",
-      contents: [
-        {title: "Spicy Roasted Chicken", price : "5.99$"},
-        {title: "Chilli Chicken", price : "3.99$"},
-        {title: "Sour & Sweet Cherry", price : "5.99$"},
-        {title: "Kebab (with beef)", price : "7.99$"},
-        {title: "Kebab (veg)", price : "7.99$"},
-        {title: "Beef Curry", price : "7.99$"}
+        {title: "White polao", price : "1.99$", imagePath: require('./assets/images/polao.jpeg')},
+        {title: "Vegetable polao", price : "2.49$", imagePath: require('./assets/images/polao.jpeg')},
+        {title: "Cauliflower polao", price : "1.99$", imagePath: require('./assets/images/polao.jpeg')}
       ]
     },
     {
       title: "Drinks",
       contents: [
-        {title: "Borhani", price : "1.99$"},
-        {title: "Coka cola", price : "2.49$"},
-        {title: "Pepsi", price : "1.99$"},
-        {title: "7up", price : "1.99$"}
+        {title: "Borhani", price : "1.99$", imagePath: require('./assets/images/borhani.jpeg')},
+        {title: "Coka cola", price : "2.49$", imagePath: require('./assets/images/borhani.jpeg')},
+        {title: "Pepsi", price : "1.99$", imagePath: require('./assets/images/borhani.jpeg')},
+        {title: "7up", price : "1.99$", imagePath: require('./assets/images/borhani.jpeg')}
       ]
     }]
   },
@@ -91,27 +73,21 @@ const menuData = [
     items: [{
       title: "Cakes",
       contents: [
-        {title: "Fruit Cake", price : "5.99$"},
-        {title: "No Cream Chocolate Cake", price : "5.99$"},
-        {title: "Vanilla Cake", price : "5.99$"},
-        {title: "Orange Cake", price : "5.99$"},
-        {title: "Red Velvet Cake", price : "5.99$"},
-        {title: "Moist Chocolate Cake", price : "5.99$"},
-        {title: "Choco Lava Cake", price : "5.99$"},
-        {title: "Cupcakes", price : "5.99$"}
+        {title: "Fruit Cake", price : "1.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "No Cream Chocolate Cake", price : "1.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Vanilla Cake", price : "2.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Orange Cake", price : "2.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Red Velvet Cake", price : "3.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Moist Chocolate Cake", price : "4.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Choco Lava Cake", price : "3.99$", imagePath: require('./assets/images/pastry.jpeg')},
+        {title: "Cupcakes", price : "0.99$", imagePath: require('./assets/images/pastry.jpeg')}
       ]
     },{
       title: "Ice Cream",
       contents: [
-        {title: "Vanilla Ice Cream", price : "5.99$"},
-        {title: "Strawberry Ice Cream", price : "5.99$"},
-        {title: "Chocolate Ice Cream", price : "5.99$"}
-      ]
-    },{
-      title: "Special",
-      contents: [
-        {title: "Malai Cake", price : "5.99$"},
-        {title: "Ice cream Cake", price : "5.99$"},
+        {title: "Vanilla Ice Cream", price : "1.99$", imagePath: require('./assets/images/icecream.jpeg')},
+        {title: "Strawberry Ice Cream", price : "1.99$", imagePath: require('./assets/images/icecream.jpeg')},
+        {title: "Chocolate Ice Cream", price : "2.99$", imagePath: require('./assets/images/icecream.jpeg')}
       ]
     }]
   },
@@ -120,40 +96,21 @@ const menuData = [
     items: [{
       title: "Burgers",
       contents: [
-        {title: "Vegetable Burger", price : "5.99$"},
-        {title: "Chicken Burger", price : "5.99$"},
-        {title: "Beef Burger", price : "5.99$"},
-        {title: "Spicy 8-layer Burger", price : "5.99$"}
+        {title: "Vegetable Burger", price : "1.99$", imagePath: require('./assets/images/burgers.jpeg')},
+        {title: "Chicken Burger", price : "2.99$", imagePath: require('./assets/images/burgers.jpeg')},
+        {title: "Beef Burger", price : "3.99$", imagePath: require('./assets/images/burgers.jpeg')},
+        {title: "Spicy 8-layer Burger", price : "5.99$", imagePath: require('./assets/images/burgers.jpeg')}
       ]
     },{
-      title: "Others",
+      title: "Pizza & Puffs",
       contents: [
-      {title: "Chicken Puff", price : "5.99$"},
-      {title: "Chicken Pizza", price : "5.99$"},
-      {title: "Beef Puff", price : "5.99$"},
-      {title: "Sandwich", price : "5.99$"}
+      {title: "Chicken Puff", price : "2.99$", imagePath: require('./assets/images/snacks.jpeg')},
+      {title: "Chicken Pizza", price : "3.99$", imagePath: require('./assets/images/snacks.jpeg')},
+      {title: "Beef Puff", price : "3.99$", imagePath: require('./assets/images/snacks.jpeg')},
+      {title: "Sandwich", price : "1.99$", imagePath: require('./assets/images/snacks.jpeg')}
     ]
-    },{
-      title: "Drinks",
-      contents: [
-      {title: "Coffee", price : "5.99$"},
-      {title: "Latte", price : "5.99$"},
-      {title: "Hot Chocolate", price : "5.99$"},
-      {title: "Green tea", price : "5.99$"}
-    ]
-  }]
-  },
-  {
-    restaurantId : "Dessert Dairy",
-    items: [{
-      title: "Pastry",
-      contents: [
-        {title: "Vanilla", price : "5.99$"},
-        {title: "Chocolate", price : "5.99$"},
-        {title: "Red Velvet", price : "5.99$"}
-      ]
     }]
-  },
+  }
 ]
 
 // step 5 - Custom HomeScreenCell
@@ -180,6 +137,7 @@ const HomeScreenCell = (props) => (
     }
   />
 );
+
 
 // Step 4 - HomeScreen
 function HomeScreen(){
@@ -211,6 +169,9 @@ function HomeScreen(){
   );
 }
 
+function menuPress(title){
+  alert('Confirm order for ' + title + '?');
+}
 
 function Menu({route}){
   const {resId} = route.params;
@@ -227,16 +188,23 @@ function Menu({route}){
               headerTextColor='black' 
               headerTextStyle={styles.sectionHeaderStyle}
             >
-              {item.contents.map((cellItem) =>(
+              {item.contents.map((cellItem) =>
                 <Cell 
-                  key={cellItem.title} 
-                  title={cellItem.title} 
-                  titleTextStyle={styles.menuCellTitleStyle} 
-                  cellStyle='RightDetail' 
-                  detail={cellItem.price}
-                  detailTextStyle={styles.menuCellDetailStyle}
+                  key={cellItem.title}
+                  cellStyle='Basic'
+                  onPress={() => menuPress(cellItem.title)}
+                  contentContainerStyle={{marginHorizontal: 20, marginVertical: 10, height: 100}}
+                  cellContentView={
+                    <View style={styles.menuCellStyle}>
+                      <View style={{flex: 2}}>
+                        <Text style={styles.menuCellTitleStyle}>{cellItem.title}</Text>
+                        <Text style={styles.menuCellDetailStyle}>Price : {cellItem.price}</Text>
+                      </View>
+                      <ImageBackground style={{flex:1}} source={cellItem.imagePath} resizeMode='cover'></ImageBackground>
+                    </View>
+                  }
                 />
-              ))}
+              )}
             </Section>
           ))}
         </TableView>
@@ -350,6 +318,11 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     fontSize: 25,
   },
+  menuCellStyle: {
+    flexDirection: 'row',
+    borderRadius: 10,
+    backgroundColor: 'white'
+  },
   menuCellTitleStyle:{
     fontSize: 20,
     fontWeight: '600',
@@ -357,12 +330,9 @@ const styles = StyleSheet.create({
     color: 'violet'
   },
   menuCellDetailStyle:{
-    fontSize: 25,
+    fontSize: 15,
     fontWeight: 'bold',
     padding: 5,
     color: 'rgba(10, 0, 255, 0.5)'
   }
 });
-
-registerRootComponent(App);
-
